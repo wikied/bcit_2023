@@ -1,21 +1,27 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "size")
-public class Size {
+@Table(name = "categories", indexes = {
+        @Index(name = "sub_cat_id", columnList = "sub_cat_id")
+})
+public class Category {
     @Id
-    @Column(name = "size_id", nullable = false, length = 32)
+    @Column(name = "category_id", nullable = false, length = 32)
     private String id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "category_name")
+    private String categoryName;
+
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sub_cat_id")
+    private SubCategory subCat;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -43,12 +49,28 @@ public class Size {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public SubCategory getSubCat() {
+        return subCat;
+    }
+
+    public void setSubCat(SubCategory subCat) {
+        this.subCat = subCat;
     }
 
     public Instant getCreateTime() {

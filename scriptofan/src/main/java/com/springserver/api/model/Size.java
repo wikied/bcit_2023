@@ -1,4 +1,4 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,14 +8,14 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "size")
+public class Size {
     @Id
-    @Column(name = "role_id", nullable = false, length = 32)
+    @Column(name = "size_id", nullable = false, length = 32)
     private String id;
 
-    @Column(name = "role_name", nullable = false)
-    private String roleName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -43,12 +43,12 @@ public class Role {
         this.id = id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getName() {
+        return name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Instant getCreateTime() {

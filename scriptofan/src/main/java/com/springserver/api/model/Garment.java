@@ -1,4 +1,4 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
 import jakarta.persistence.*;
 

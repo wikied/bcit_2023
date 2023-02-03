@@ -1,7 +1,7 @@
-package com.springserver.controller;
+package com.springserver.api.controller;
 
-import com.springserver.model.User;
-import com.springserver.repository.UserRepository;
+import com.springserver.api.model.User;
+import com.springserver.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/user/get/{id}")
     public @ResponseBody User findUserById(@PathVariable String id) {
-        return userRepository.findUsersBy(id);
+        return userRepository.findById(id).get();
     }
 
     @GetMapping("/user/test")

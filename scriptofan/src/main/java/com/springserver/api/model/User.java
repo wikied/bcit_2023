@@ -1,28 +1,33 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(name = "sellers", indexes = {
-        @Index(name = "user_id", columnList = "user_id")
+@Table(name = "users", indexes = {
+        @Index(name = "role_id", columnList = "role_id")
 })
-public class Seller {
+public class User {
     @Id
-    @Column(name = "seller_id", nullable = false, length = 32)
+    @Column(name = "user_id", nullable = false, length = 32)
     private String id;
 
-    @Column(name = "seller_rating")
-    private Integer sellerRating;
-
-    @Column(name = "revenue", precision = 10, scale = 2)
-    private BigDecimal revenue;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "user_email")
+    private String userEmail;
+
+    @Column(name = "user_password")
+    private String userPassword;
+
+    @Column(name = "user_phonenumber")
+    private String userPhonenumber;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -50,28 +55,44 @@ public class Seller {
         this.id = id;
     }
 
-    public Integer getSellerRating() {
-        return sellerRating;
+    public Role getRole() {
+        return role;
     }
 
-    public void setSellerRating(Integer sellerRating) {
-        this.sellerRating = sellerRating;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public BigDecimal getRevenue() {
-        return revenue;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setRevenue(BigDecimal revenue) {
-        this.revenue = revenue;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public String getUserPhonenumber() {
+        return userPhonenumber;
+    }
+
+    public void setUserPhonenumber(String userPhonenumber) {
+        this.userPhonenumber = userPhonenumber;
     }
 
     public Instant getCreateTime() {

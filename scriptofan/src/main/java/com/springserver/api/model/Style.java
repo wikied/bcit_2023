@@ -1,33 +1,21 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "users", indexes = {
-        @Index(name = "role_id", columnList = "role_id")
-})
-public class User {
+@Table(name = "styles")
+public class Style {
     @Id
-    @Column(name = "user_id", nullable = false, length = 32)
+    @Column(name = "style_id", nullable = false, length = 32)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id")
-    private Role role;
-
-    @Column(name = "user_name")
-    private String userName;
-
-    @Column(name = "user_email")
-    private String userEmail;
-
-    @Column(name = "user_password")
-    private String userPassword;
-
-    @Column(name = "user_phonenumber")
-    private String userPhonenumber;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -55,44 +43,12 @@ public class User {
         this.id = id;
     }
 
-    public Role getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
-
-    public String getUserPhonenumber() {
-        return userPhonenumber;
-    }
-
-    public void setUserPhonenumber(String userPhonenumber) {
-        this.userPhonenumber = userPhonenumber;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Instant getCreateTime() {

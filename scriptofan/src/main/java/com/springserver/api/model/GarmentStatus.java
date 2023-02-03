@@ -1,4 +1,4 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,14 +8,23 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 
 @Entity
-@Table(name = "colours")
-public class Colour {
+@Table(name = "garment_statuses")
+public class GarmentStatus {
     @Id
-    @Column(name = "colour_id", nullable = false, length = 32)
+    @Column(name = "garment_status_id", nullable = false, length = 32)
     private String id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "posted", columnDefinition = "TINYINT UNSIGNED not null")
+    private Short posted;
+
+    @Column(name = "in_store")
+    private Boolean inStore;
+
+    @Column(name = "pending_purchase")
+    private Boolean pendingPurchase;
+
+    @Column(name = "purchased")
+    private Boolean purchased;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -43,12 +52,36 @@ public class Colour {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Short getPosted() {
+        return posted;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPosted(Short posted) {
+        this.posted = posted;
+    }
+
+    public Boolean getInStore() {
+        return inStore;
+    }
+
+    public void setInStore(Boolean inStore) {
+        this.inStore = inStore;
+    }
+
+    public Boolean getPendingPurchase() {
+        return pendingPurchase;
+    }
+
+    public void setPendingPurchase(Boolean pendingPurchase) {
+        this.pendingPurchase = pendingPurchase;
+    }
+
+    public Boolean getPurchased() {
+        return purchased;
+    }
+
+    public void setPurchased(Boolean purchased) {
+        this.purchased = purchased;
     }
 
     public Instant getCreateTime() {

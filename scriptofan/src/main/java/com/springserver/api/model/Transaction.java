@@ -1,21 +1,35 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "garment_images")
-public class GarmentImage {
+@Table(name = "transactions", indexes = {
+        @Index(name = "Payment_id", columnList = "payment_id"),
+        @Index(name = "Customer_id", columnList = "user_id")
+})
+public class Transaction {
     @Id
-    @Column(name = "garment_image_id", nullable = false, length = 32)
+    @Column(name = "transaction_id", nullable = false, length = 32)
     private String id;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Buyer user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
+    @Column(name = "date")
+    private Instant date;
+
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @Column(name = "total", nullable = false)
+    private Integer total;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -43,12 +57,44 @@ public class GarmentImage {
         this.id = id;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public Buyer getUser() {
+        return user;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setUser(Buyer user) {
+        this.user = user;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public Instant getDate() {
+        return date;
+    }
+
+    public void setDate(Instant date) {
+        this.date = date;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
     }
 
     public Instant getCreateTime() {

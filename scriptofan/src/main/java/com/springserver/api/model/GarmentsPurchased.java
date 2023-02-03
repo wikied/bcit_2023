@@ -1,27 +1,26 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
 import jakarta.persistence.*;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "categories", indexes = {
-        @Index(name = "sub_cat_id", columnList = "sub_cat_id")
+@Table(name = "garments_purchased", indexes = {
+        @Index(name = "garment_fk_idx", columnList = "garment_id")
 })
-public class Category {
-    @Id
-    @Column(name = "category_id", nullable = false, length = 32)
-    private String id;
+public class GarmentsPurchased {
+    @EmbeddedId
+    private GarmentsPurchasedId id;
 
-    @Column(name = "category_name")
-    private String categoryName;
+    @MapsId("transactionId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "transaction_id", nullable = false)
+    private Transaction transaction;
 
-    @Column(name = "description")
-    private String description;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sub_cat_id")
-    private SubCategory subCat;
+    @MapsId("garmentId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "garment_id", nullable = false)
+    private Garment garment;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -41,36 +40,28 @@ public class Category {
     @Column(name = "deleted_by", length = 50)
     private String deletedBy;
 
-    public String getId() {
+    public GarmentsPurchasedId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(GarmentsPurchasedId id) {
         this.id = id;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public Transaction getTransaction() {
+        return transaction;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 
-    public String getDescription() {
-        return description;
+    public Garment getGarment() {
+        return garment;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public SubCategory getSubCat() {
-        return subCat;
-    }
-
-    public void setSubCat(SubCategory subCat) {
-        this.subCat = subCat;
+    public void setGarment(Garment garment) {
+        this.garment = garment;
     }
 
     public Instant getCreateTime() {

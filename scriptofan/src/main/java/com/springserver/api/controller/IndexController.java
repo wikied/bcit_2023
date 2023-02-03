@@ -1,4 +1,4 @@
-package com.springserver.controller;
+package com.springserver.api.controller;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

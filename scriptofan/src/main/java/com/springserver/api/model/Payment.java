@@ -1,35 +1,21 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "transactions", indexes = {
-        @Index(name = "Payment_id", columnList = "payment_id"),
-        @Index(name = "Customer_id", columnList = "user_id")
-})
-public class Transaction {
+@Table(name = "payments")
+public class Payment {
     @Id
-    @Column(name = "transaction_id", nullable = false, length = 32)
+    @Column(name = "payment_id", nullable = false, length = 32)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Buyer user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
-
-    @Column(name = "date")
-    private Instant date;
-
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
-
-    @Column(name = "total", nullable = false)
-    private Integer total;
+    @Column(name = "payment_type")
+    private String paymentType;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -57,44 +43,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Buyer getUser() {
-        return user;
+    public String getPaymentType() {
+        return paymentType;
     }
 
-    public void setUser(Buyer user) {
-        this.user = user;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
-
-    public Instant getDate() {
-        return date;
-    }
-
-    public void setDate(Instant date) {
-        this.date = date;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Integer getTotal() {
-        return total;
-    }
-
-    public void setTotal(Integer total) {
-        this.total = total;
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
     }
 
     public Instant getCreateTime() {

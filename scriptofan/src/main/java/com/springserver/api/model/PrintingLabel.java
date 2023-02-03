@@ -1,21 +1,30 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
 import jakarta.persistence.*;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "buyers", indexes = {
-        @Index(name = "user_id", columnList = "user_id")
+@Table(name = "printing_labels", indexes = {
+        @Index(name = "printing_labels_ibjk_1_idx", columnList = "garment_id")
 })
-public class Buyer {
+public class PrintingLabel {
     @Id
-    @Column(name = "buyer_id", nullable = false, length = 32)
+    @Column(name = "label_id", nullable = false, length = 32)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "print_date")
+    private Instant printDate;
+
+    @Column(name = "aisle_number")
+    private Integer aisleNumber;
+
+    @Column(name = "item_barcode")
+    private String itemBarcode;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "garment_id", nullable = false)
+    private Garment garment;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -23,7 +32,7 @@ public class Buyer {
     @Column(name = "update_time")
     private Instant updateTime;
 
-    @Column(name = "delete_time")
+    @Column(name = "`delete_time'`")
     private Instant deleteTime;
 
     @Column(name = "created_by", length = 50)
@@ -43,12 +52,36 @@ public class Buyer {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Instant getPrintDate() {
+        return printDate;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPrintDate(Instant printDate) {
+        this.printDate = printDate;
+    }
+
+    public Integer getAisleNumber() {
+        return aisleNumber;
+    }
+
+    public void setAisleNumber(Integer aisleNumber) {
+        this.aisleNumber = aisleNumber;
+    }
+
+    public String getItemBarcode() {
+        return itemBarcode;
+    }
+
+    public void setItemBarcode(String itemBarcode) {
+        this.itemBarcode = itemBarcode;
+    }
+
+    public Garment getGarment() {
+        return garment;
+    }
+
+    public void setGarment(Garment garment) {
+        this.garment = garment;
     }
 
     public Instant getCreateTime() {

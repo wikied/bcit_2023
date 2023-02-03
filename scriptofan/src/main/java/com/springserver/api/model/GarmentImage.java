@@ -1,30 +1,21 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "printing_labels", indexes = {
-        @Index(name = "printing_labels_ibjk_1_idx", columnList = "garment_id")
-})
-public class PrintingLabel {
+@Table(name = "garment_images")
+public class GarmentImage {
     @Id
-    @Column(name = "label_id", nullable = false, length = 32)
+    @Column(name = "garment_image_id", nullable = false, length = 32)
     private String id;
 
-    @Column(name = "print_date")
-    private Instant printDate;
-
-    @Column(name = "aisle_number")
-    private Integer aisleNumber;
-
-    @Column(name = "item_barcode")
-    private String itemBarcode;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "garment_id", nullable = false)
-    private Garment garment;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -32,7 +23,7 @@ public class PrintingLabel {
     @Column(name = "update_time")
     private Instant updateTime;
 
-    @Column(name = "`delete_time'`")
+    @Column(name = "delete_time")
     private Instant deleteTime;
 
     @Column(name = "created_by", length = 50)
@@ -52,36 +43,12 @@ public class PrintingLabel {
         this.id = id;
     }
 
-    public Instant getPrintDate() {
-        return printDate;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setPrintDate(Instant printDate) {
-        this.printDate = printDate;
-    }
-
-    public Integer getAisleNumber() {
-        return aisleNumber;
-    }
-
-    public void setAisleNumber(Integer aisleNumber) {
-        this.aisleNumber = aisleNumber;
-    }
-
-    public String getItemBarcode() {
-        return itemBarcode;
-    }
-
-    public void setItemBarcode(String itemBarcode) {
-        this.itemBarcode = itemBarcode;
-    }
-
-    public Garment getGarment() {
-        return garment;
-    }
-
-    public void setGarment(Garment garment) {
-        this.garment = garment;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Instant getCreateTime() {

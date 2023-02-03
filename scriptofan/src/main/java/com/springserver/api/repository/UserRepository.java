@@ -1,12 +1,12 @@
-package com.springserver.repository;
+package com.springserver.api.repository;
 
-
+import com.springserver.api.model.User;
 import org.springframework.data.repository.CrudRepository;
-
-import com.springserver.model.User;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, String> {
-    User findUsersBy(String id);
+    public Optional<User> findById(String id);
 }

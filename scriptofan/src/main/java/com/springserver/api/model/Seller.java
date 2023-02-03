@@ -1,26 +1,28 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(name = "garments_purchased", indexes = {
-        @Index(name = "garment_fk_idx", columnList = "garment_id")
+@Table(name = "sellers", indexes = {
+        @Index(name = "user_id", columnList = "user_id")
 })
-public class GarmentsPurchased {
-    @EmbeddedId
-    private GarmentsPurchasedId id;
+public class Seller {
+    @Id
+    @Column(name = "seller_id", nullable = false, length = 32)
+    private String id;
 
-    @MapsId("transactionId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "transaction_id", nullable = false)
-    private Transaction transaction;
+    @Column(name = "seller_rating")
+    private Integer sellerRating;
 
-    @MapsId("garmentId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "garment_id", nullable = false)
-    private Garment garment;
+    @Column(name = "revenue", precision = 10, scale = 2)
+    private BigDecimal revenue;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -40,28 +42,36 @@ public class GarmentsPurchased {
     @Column(name = "deleted_by", length = 50)
     private String deletedBy;
 
-    public GarmentsPurchasedId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(GarmentsPurchasedId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public Integer getSellerRating() {
+        return sellerRating;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setSellerRating(Integer sellerRating) {
+        this.sellerRating = sellerRating;
     }
 
-    public Garment getGarment() {
-        return garment;
+    public BigDecimal getRevenue() {
+        return revenue;
     }
 
-    public void setGarment(Garment garment) {
-        this.garment = garment;
+    public void setRevenue(BigDecimal revenue) {
+        this.revenue = revenue;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Instant getCreateTime() {

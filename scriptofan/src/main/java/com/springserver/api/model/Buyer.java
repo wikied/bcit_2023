@@ -1,21 +1,21 @@
-package com.springserver.model;
+package com.springserver.api.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "payments")
-public class Payment {
+@Table(name = "buyers", indexes = {
+        @Index(name = "user_id", columnList = "user_id")
+})
+public class Buyer {
     @Id
-    @Column(name = "payment_id", nullable = false, length = 32)
+    @Column(name = "buyer_id", nullable = false, length = 32)
     private String id;
 
-    @Column(name = "payment_type")
-    private String paymentType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "create_time")
     private Instant createTime;
@@ -43,12 +43,12 @@ public class Payment {
         this.id = id;
     }
 
-    public String getPaymentType() {
-        return paymentType;
+    public User getUser() {
+        return user;
     }
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Instant getCreateTime() {
