@@ -3,6 +3,7 @@ package com.springserver.api.model;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users", indexes = {
@@ -11,7 +12,7 @@ import java.time.Instant;
 public class User {
     @Id
     @Column(name = "user_id", nullable = false, length = 32)
-    private String id;
+    private String id = UUID.randomUUID().toString().replace("-", "");
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
