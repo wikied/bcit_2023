@@ -11,4 +11,9 @@ public class IndexController {
     String index() {
         return "Index";
     }
+
+    @GetMapping("/test-auth")
+    String testAuth() {
+        return "REQUIRES AUTHENTICATION";
+    }
 }
