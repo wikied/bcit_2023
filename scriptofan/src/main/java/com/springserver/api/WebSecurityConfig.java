@@ -14,6 +14,7 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests()
                 .requestMatchers("/test-auth").authenticated()
+                .requestMatchers("/role/*").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .logout()

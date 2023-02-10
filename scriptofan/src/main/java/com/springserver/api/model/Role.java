@@ -4,20 +4,23 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "roles")
 public class Role {
     @Id
     @Column(name = "role_id", nullable = false, length = 32)
-    private String id;
+    private String id = UUID.randomUUID().toString().replace("-", "");
 
     @Column(name = "role_name", nullable = false)
     private String roleName;
 
-    @Column(name = "create_time")
+    @Column(name = "create_time", nullable = false, updatable = false)
+    @CreationTimestamp
     private Instant createTime;
 
     @Column(name = "update_time")
@@ -26,7 +29,7 @@ public class Role {
     @Column(name = "delete_time")
     private Instant deleteTime;
 
-    @Column(name = "created_by", length = 50)
+    @Column(name = "created_by", length = 50, nullable = false, updatable = false)
     private String createdBy;
 
     @Column(name = "updated_by", length = 50)
@@ -97,6 +100,10 @@ public class Role {
 
     public void setDeletedBy(String deletedBy) {
         this.deletedBy = deletedBy;
+    }
+
+    public boolean isDeleted() {
+        return deletedBy != null;
     }
 
 }

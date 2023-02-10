@@ -8,9 +8,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @Component
@@ -30,7 +33,15 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         if (user.isEmpty()) {
             throw new BadCredentialsException("User not found.");
         } else if (passwordEncoder.matches(password, user.get().getUserPassword())) {
-            return new UsernamePasswordAuthenticationToken(name, password);
+
+            String roleName = "user";
+            if (user.get().getRole() != null && !user.get().getRole().isDeleted()) {
+                roleName = user.get().getRole().getRoleName();
+            }
+
+            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + roleName);
+
+            return new UsernamePasswordAuthenticationToken(name, password, Arrays.asList(authority));
         } else {
             throw new BadCredentialsException("Invalid Password.");
         }
