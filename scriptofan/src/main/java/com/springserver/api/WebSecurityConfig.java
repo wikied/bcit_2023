@@ -18,7 +18,9 @@ public class WebSecurityConfig {
                 .and()
                 .logout()
                 .and()
-                .formLogin();
+                .formLogin()
+                .and()
+                .csrf().disable();
 
         return http.build();
     }
