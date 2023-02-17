@@ -3,6 +3,7 @@ package com.springserver.api.model;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "categories", indexes = {
@@ -11,7 +12,7 @@ import java.time.Instant;
 public class Category {
     @Id
     @Column(name = "category_id", nullable = false, length = 32)
-    private String id;
+    private String id = UUID.randomUUID().toString().replace("-", "");
 
     @Column(name = "category_name")
     private String categoryName;
