@@ -1,6 +1,7 @@
 package com.springserver.api.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -11,8 +12,10 @@ import java.util.UUID;
 })
 public class User {
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name="uuid", strategy = "uuid")
     @Column(name = "user_id", nullable = false, length = 32)
-    private String id = UUID.randomUUID().toString().replace("-", "");
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
