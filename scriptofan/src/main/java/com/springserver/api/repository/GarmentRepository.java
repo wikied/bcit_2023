@@ -1,0 +1,13 @@
+package com.springserver.api.repository;
+
+import java.util.Optional;
+
+import com.springserver.api.model.Garment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import java.util.Optional;
+@Repository
+public interface GarmentRepository extends CrudRepository<Garment, String> {
+    public Optional<Garment> findById(String id);
+}
