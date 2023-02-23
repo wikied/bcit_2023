@@ -1,9 +1,8 @@
 package com.springserver.api.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
 
@@ -11,6 +10,8 @@ import java.time.Instant;
 @Table(name = "payments")
 public class Payment {
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name="uuid", strategy = "uuid")
     @Column(name = "payment_id", nullable = false, length = 32)
     private String id;
 
@@ -18,6 +19,7 @@ public class Payment {
     private String paymentType;
 
     @Column(name = "create_time")
+    @CreationTimestamp
     private Instant createTime;
 
     @Column(name = "update_time")
