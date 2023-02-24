@@ -1,9 +1,7 @@
 package com.springserver.api.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
 
@@ -11,6 +9,8 @@ import java.time.Instant;
 @Table(name = "colours")
 public class Colour {
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name="uuid", strategy = "uuid")
     @Column(name = "colour_id", nullable = false, length = 32)
     private String id;
 

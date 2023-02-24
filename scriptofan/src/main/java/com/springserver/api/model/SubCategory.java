@@ -1,6 +1,7 @@
 package com.springserver.api.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
 
@@ -13,6 +14,8 @@ import java.time.Instant;
 })
 public class SubCategory {
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name="uuid", strategy = "uuid")
     @Column(name = "sub_cat_id", nullable = false, length = 32)
     private String id;
 

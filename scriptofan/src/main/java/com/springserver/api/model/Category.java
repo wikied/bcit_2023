@@ -1,6 +1,7 @@
 package com.springserver.api.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -11,6 +12,8 @@ import java.util.UUID;
 })
 public class Category {
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name="uuid", strategy = "uuid")
     @Column(name = "category_id", nullable = false, length = 32)
     private String id = UUID.randomUUID().toString().replace("-", "");
 
