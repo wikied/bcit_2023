@@ -49,10 +49,11 @@ public class GarmentController {
         createGarment.setDetails(details);
         createGarment.setCreateTime(createTime);
         createGarment.setCreatedBy(createdBy);
+        garmentRepository.save(createGarment);
 
         return "Garment has been successfully created!";
     }
-}
+
 
     @PostMapping("garment/{id}/edit")
     public @ResponseBody String editGarment (@PathVariable String id, @RequestParam  String description, @RequestParam String material, @RequestParam String defects, @RequestParam Integer price, @RequestParam BigDecimal co2Saved, @RequestParam Integer garmentRating, @RequestParam String details, @RequestParam Instant updateTime , @RequestParam String updatedBy) {
@@ -65,6 +66,7 @@ public class GarmentController {
         garmentID.setDetails(details);
         garmentID.setUpdateTime(updateTime);
         garmentID.setUpdatedBy(updatedBy);
+        garmentRepository.save(garmentID);
         return "Saved";
     }
 
@@ -73,6 +75,7 @@ public class GarmentController {
         Garment garmentId = garmentRepository.findById(id).get();
         garmentId.setDeleteTime(deleteTime);
         garmentId.setDeletedBy(deletedBy);
+        garmentRepository.save(garmentId);
         return "Deleted";
     }
 }
