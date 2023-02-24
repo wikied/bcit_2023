@@ -9,6 +9,9 @@ import com.springserver.api.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.util.Optional;
+
 @Component
 public class TransactionController {
 
@@ -18,7 +21,7 @@ public class TransactionController {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    public void createTransaction(Buyer buyer, Integer priceTotal, Integer quantity, String paymentType, String createdBy) {
+    public Transaction createTransaction(Buyer buyer, Integer priceTotal, Integer quantity, String paymentType, String createdBy) {
         final Payment payment = new Payment();
         payment.setCreatedBy(createdBy);
         payment.setPaymentType(paymentType);
@@ -31,11 +34,21 @@ public class TransactionController {
         transaction.setQuantity(quantity);
         transaction.setBuyer(buyer);
         transaction.setCreatedBy(createdBy);
-        transactionRepository.save(transaction);
+        return transactionRepository.save(transaction);
 
     }
 
     public Iterable<Transaction> getAll() {
         return transactionRepository.findAll();
+    }
+
+    public Optional<Transaction> getTransaction(String transactionId) {
+        return transactionRepository.findById(transactionId);
+    }
+
+    public void deleteTransaction(Transaction transaction, String deletedBy) {
+        transaction.setDeletedBy(deletedBy);
+        transaction.setDeleteTime(Instant.now());
+        transactionRepository.save(transaction);
     }
 }

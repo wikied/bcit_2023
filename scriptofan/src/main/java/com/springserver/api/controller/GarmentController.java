@@ -23,7 +23,7 @@ public class GarmentController {
 
     //get garment by id REST API
     @GetMapping("/garment/get/{id}")
-    public @ResponseBody Category getGarment (@PathVariable String id) {
+    public @ResponseBody Garment getGarment (@PathVariable String id) {
         return garmentRepository.findById(id).get();
     }
 
@@ -52,7 +52,6 @@ public class GarmentController {
 
         return "Garment has been successfully created!";
     }
-}
 
     @PostMapping("garment/{id}/edit")
     public @ResponseBody String editGarment (@PathVariable String id, @RequestParam  String description, @RequestParam String material, @RequestParam String defects, @RequestParam Integer price, @RequestParam BigDecimal co2Saved, @RequestParam Integer garmentRating, @RequestParam String details, @RequestParam Instant updateTime , @RequestParam String updatedBy) {

@@ -3,8 +3,10 @@ package com.springserver.api.controller;
 import com.springserver.api.model.Buyer;
 import com.springserver.api.model.Transaction;
 import com.springserver.api.model.User;
+import com.springserver.api.provider.ResourceNotFoundException;
 import com.springserver.api.repository.BuyerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +23,27 @@ public class TransactionRestController {
     private BuyerRepository buyerRepository;
 
     @PostMapping("/create")
-    public @ResponseBody String createTransaction(@RequestParam String buyerId,
+    public @ResponseBody Transaction createTransaction(Authentication authentication, @RequestParam String buyerId,
                                                   @RequestParam Integer priceTotal,
                                                   @RequestParam Integer quantity,
                                                   @RequestParam String paymentType) {
         Optional<Buyer> buyerQuery = buyerRepository.findById(buyerId);
         if (buyerQuery.isPresent()) {
-            final String createdBy = buyerQuery.get().getUser().getUserName();
-            transactionController.createTransaction(buyerQuery.get(), priceTotal, quantity, paymentType, createdBy);
-
-            return "Saved";
+            return transactionController.createTransaction(buyerQuery.get(), priceTotal, quantity, paymentType, authentication.getName());
         }
-        return "Invalid Data";
+
+        throw new ResourceNotFoundException("Buyer", "id", buyerId);
+    }
+
+    @PostMapping("/{id}/delete")
+    public @ResponseBody ResponseEntity<?> deleteTransaction(Authentication authentication, @PathVariable String id) {
+        Optional<Transaction> transaction = transactionController.getTransaction(id);
+        if (transaction.isPresent()) {
+            transactionController.deleteTransaction(transaction.get(), authentication.getName());
+            return ResponseEntity.ok().build();
+        }
+        
+        throw new ResourceNotFoundException("Transaction", "id", id);
     }
 
     @GetMapping("/all")
