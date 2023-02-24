@@ -6,13 +6,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "payments")
 public class Payment {
     @Id
     @Column(name = "payment_id", nullable = false, length = 32)
-    private String id;
+    private String id = UUID.randomUUID().toString().replace("-", "");
 
     @Column(name = "payment_type")
     private String paymentType;
