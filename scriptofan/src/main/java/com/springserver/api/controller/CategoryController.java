@@ -49,7 +49,7 @@ public class CategoryController {
         return "Saved";
     }
 
-    @PostMapping ("category/find/{id}/remove")
+    @PostMapping ("/category/find/{id}/remove")
     public @ResponseBody String removeCategory(@PathVariable String id, @RequestParam String deletedBy) {
         Category categoryID = categoryRepository.findById(id).get();
         categoryID.setDeletedBy(deletedBy);

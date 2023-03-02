@@ -27,7 +27,7 @@ public class ColourController {
     }
 
     //create colour
-    @PostMapping("/style/create")
+    @PostMapping("/colour/create")
     public @ResponseBody String createColour(@RequestParam String id, @RequestParam String name, @RequestParam String createdBy) {
         Colour createColour = new Colour();
         createColour.setId(id);
@@ -39,7 +39,7 @@ public class ColourController {
     }
 
     //update colour
-    @PostMapping("colour/update/{id}")
+    @PostMapping("/colour/update/{id}")
     public @ResponseBody String updateColour (@PathVariable String id, @RequestParam String name, @RequestParam String updatedBy) {
         Colour updatebyid = colourRepository.findById(id).get();
         updatebyid.setName(name);
@@ -49,7 +49,7 @@ public class ColourController {
         return "Colour updated!";
     }
     //delete colour
-    @PostMapping("Colour/delete/{id}")
+    @PostMapping("/Colour/delete/{id}")
     public @ResponseBody String deleteColour (@PathVariable String id, @RequestParam String deletedBy) {
         Colour deletebyid = colourRepository.findById(id).get();
         deletebyid.setDeleteTime(Instant.now());
