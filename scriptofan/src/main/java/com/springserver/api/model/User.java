@@ -1,5 +1,6 @@
 package com.springserver.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -28,6 +29,7 @@ public class User {
     private String userEmail;
 
     @Column(name = "user_password")
+    @JsonIgnore
     private String userPassword;
 
     @Column(name = "user_phonenumber")

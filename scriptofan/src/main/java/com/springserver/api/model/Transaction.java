@@ -1,6 +1,7 @@
 package com.springserver.api.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
@@ -8,7 +9,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "transactions", indexes = {
         @Index(name = "Payment_id", columnList = "payment_id"),
-        @Index(name = "Customer_id", columnList = "user_id")
+        @Index(name = "Customer_id", columnList = "buyer_id")
 })
 public class Transaction {
     @Id
@@ -17,15 +18,16 @@ public class Transaction {
     @Column(name = "transaction_id", nullable = false, length = 32)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Buyer user;
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "buyer_id")
+    private Buyer buyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
     @Column(name = "date")
+    @CreationTimestamp
     private Instant date;
 
     @Column(name = "quantity", nullable = false)
@@ -35,6 +37,7 @@ public class Transaction {
     private Integer total;
 
     @Column(name = "create_time")
+    @CreationTimestamp
     private Instant createTime;
 
     @Column(name = "update_time")
@@ -60,12 +63,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Buyer getUser() {
-        return user;
+    public Buyer getBuyer() {
+        return buyer;
     }
 
-    public void setUser(Buyer user) {
-        this.user = user;
+    public void setBuyer(Buyer buyer) {
+        this.buyer = buyer;
     }
 
     public Payment getPayment() {

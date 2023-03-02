@@ -1,6 +1,8 @@
 package com.springserver.api.controller;
 
+import com.springserver.api.model.Buyer;
 import com.springserver.api.model.User;
+import com.springserver.api.repository.BuyerRepository;
 import com.springserver.api.provider.ResourceNotFoundException;
 import com.springserver.api.repository.UserRepository;
 import com.springserver.api.service.UserService;

@@ -1,6 +1,7 @@
 package com.springserver.api.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
@@ -21,6 +22,7 @@ public class Buyer {
     private User user;
 
     @Column(name = "create_time")
+    @CreationTimestamp
     private Instant createTime;
 
     @Column(name = "update_time")
