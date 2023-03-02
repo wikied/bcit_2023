@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.time.Instant;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Table(name = "transactions", indexes = {
         @Index(name = "Payment_id", columnList = "payment_id"),
         @Index(name = "Customer_id", columnList = "buyer_id")
