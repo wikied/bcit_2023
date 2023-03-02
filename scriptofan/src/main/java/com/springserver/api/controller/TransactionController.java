@@ -20,7 +20,7 @@ import java.util.Optional;
 public class TransactionController {
 
     @Autowired
-    private TransactionService transactionController;
+    private TransactionService transactionService;
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -35,7 +35,7 @@ public class TransactionController {
                                                   @RequestParam String paymentType) {
         Optional<Buyer> buyerQuery = buyerRepository.findById(buyerId);
         if (buyerQuery.isPresent()) {
-            return transactionController.createTransaction(buyerQuery.get(), priceTotal, quantity, paymentType, authentication.getName());
+            return transactionService.createTransaction(buyerQuery.get(), priceTotal, quantity, paymentType, authentication.getName());
         }
 
         throw new ResourceNotFoundException("Buyer", "id", buyerId);
@@ -47,14 +47,14 @@ public class TransactionController {
         if (transaction.isEmpty()) {
             throw new ResourceNotFoundException("Transaction", "id", id);
         }
-        return transactionController.update(transaction.get(), transactionRequest, authentication.getName());
+        return transactionService.update(transaction.get(), transactionRequest, authentication.getName());
     }
 
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity<?> deleteTransaction(Authentication authentication, @PathVariable String id) {
-        Optional<Transaction> transaction = transactionController.getTransaction(id);
+        Optional<Transaction> transaction = transactionService.getTransaction(id);
         if (transaction.isPresent()) {
-            transactionController.deleteTransaction(transaction.get(), authentication.getName());
+            transactionService.deleteTransaction(transaction.get(), authentication.getName());
             return ResponseEntity.ok().build();
         }
         
@@ -63,7 +63,7 @@ public class TransactionController {
 
     @GetMapping()
     public @ResponseBody Iterable<Transaction> getAllTransactions(Authentication authentication) {
-        return transactionController.getAll();
+        return transactionService.getAll();
     }
 
     @GetMapping("/{id}")

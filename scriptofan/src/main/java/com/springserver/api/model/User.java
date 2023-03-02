@@ -1,6 +1,7 @@
 package com.springserver.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -8,6 +9,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Table(name = "users", indexes = {
         @Index(name = "role_id", columnList = "role_id")
 })

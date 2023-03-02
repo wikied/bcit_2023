@@ -1,6 +1,8 @@
 package com.springserver.api.service;
 
+import com.springserver.api.model.Buyer;
 import com.springserver.api.model.User;
+import com.springserver.api.repository.BuyerRepository;
 import com.springserver.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,12 +18,22 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BuyerRepository buyerRepository;
+
     public User createUser(String name, String email, String password) {
         User u = new User();
         u.setUserName(name);
         u.setUserEmail(email);
         u.setUserPassword(encoder.encode(password));
-        return userRepository.save(u);
+
+        Buyer buyer = new Buyer();
+        buyer.setUser(u);
+
+        userRepository.save(u);
+        buyerRepository.save(buyer);
+
+        return u;
     }
 
     public User update(User user, User userRequest, String updatedBy) {

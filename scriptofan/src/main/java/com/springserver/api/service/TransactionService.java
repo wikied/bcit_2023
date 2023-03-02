@@ -21,10 +21,10 @@ public class TransactionService {
     private PaymentRepository paymentRepository;
 
     public Transaction createTransaction(Buyer buyer, Integer priceTotal, Integer quantity, String paymentType, String createdBy) {
-        final Payment payment = new Payment();
+        Payment payment = new Payment();
         payment.setCreatedBy(createdBy);
         payment.setPaymentType(paymentType);
-        paymentRepository.save(payment);
+        payment = paymentRepository.save(payment);
 
         final Transaction transaction = new Transaction();
         transaction.setTotal(priceTotal);
