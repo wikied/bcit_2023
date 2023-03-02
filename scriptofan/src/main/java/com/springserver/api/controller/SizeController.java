@@ -38,7 +38,7 @@ public class SizeController {
     }
 
     //update size
-    @PostMapping("size/update/{id}")
+    @PostMapping("/size/update/{id}")
     public @ResponseBody String updateColour (@PathVariable String id, @RequestParam String name, @RequestParam String updatedBy) {
         Size updatebyid = sizeRepository.findById(id).get();
         updatebyid.setName(name);
@@ -48,7 +48,7 @@ public class SizeController {
         return "Size updated!";
     }
     //delete size
-    @PostMapping("Colour/delete/{id}")
+    @PostMapping("/size/delete/{id}")
     public @ResponseBody String updateColour (@PathVariable String id, @RequestParam String deletedBy) {
         Size deletebyid = sizeRepository.findById(id).get();
         deletebyid.setDeleteTime(Instant.now());
