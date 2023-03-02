@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "payments")
@@ -13,7 +14,7 @@ public class Payment {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name="uuid", strategy = "uuid")
     @Column(name = "payment_id", nullable = false, length = 32)
-    private String id;
+    private String id = UUID.randomUUID().toString().replace("-", "");
 
     @Column(name = "payment_type")
     private String paymentType;

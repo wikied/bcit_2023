@@ -31,8 +31,7 @@ public class GarmentController {
     @PostMapping("/garment/create")
     public @ResponseBody String createGarment(@RequestParam String id, @RequestParam Category category, @RequestParam Seller seller, @RequestParam GarmentImage garmentImage, @RequestParam GarmentStatus garmentStatus,
                                               @RequestParam(required=false) String description, @RequestParam(required = false) String material, @RequestParam(required = false) String defects, @RequestParam(required = false) Integer price,
-                                              @RequestParam(required=false) BigDecimal co2Saved, @RequestParam(required=false) Integer garmentRating, @RequestParam(required = false) String details, @RequestParam(required = false) Instant createTime,
-                                              @RequestParam(required=false) String createdBy) {
+                                              @RequestParam(required=false) BigDecimal co2Saved, @RequestParam(required=false) Integer garmentRating, @RequestParam(required = false) String details, @RequestParam(required=false) String createdBy) {
         Garment createGarment = new Garment();
         createGarment.setId(id);
         createGarment.setCategory(category);
@@ -47,14 +46,16 @@ public class GarmentController {
         createGarment.setGarmentRating(garmentRating);
         createGarment.setDefects(defects);
         createGarment.setDetails(details);
-        createGarment.setCreateTime(createTime);
+        createGarment.setCreateTime(Instant.now());
         createGarment.setCreatedBy(createdBy);
+        garmentRepository.save(createGarment);
 
         return "Garment has been successfully created!";
     }
 
+
     @PostMapping("garment/{id}/edit")
-    public @ResponseBody String editGarment (@PathVariable String id, @RequestParam  String description, @RequestParam String material, @RequestParam String defects, @RequestParam Integer price, @RequestParam BigDecimal co2Saved, @RequestParam Integer garmentRating, @RequestParam String details, @RequestParam Instant updateTime , @RequestParam String updatedBy) {
+    public @ResponseBody String editGarment (@PathVariable String id, @RequestParam  String description, @RequestParam String material, @RequestParam String defects, @RequestParam Integer price, @RequestParam BigDecimal co2Saved, @RequestParam Integer garmentRating, @RequestParam String details, @RequestParam String updatedBy) {
         Garment garmentID = garmentRepository.findById(id).get();
         garmentID.setDescription(description);
         garmentID.setMaterial(material);
@@ -62,16 +63,18 @@ public class GarmentController {
         garmentID.setPrice(price);
         garmentID.setCo2Saved(co2Saved);
         garmentID.setDetails(details);
-        garmentID.setUpdateTime(updateTime);
+        garmentID.setUpdateTime(Instant.now());
         garmentID.setUpdatedBy(updatedBy);
+        garmentRepository.save(garmentID);
         return "Saved";
     }
 
     @PostMapping("garment/{id}/delete")
-    public @ResponseBody String deleteGarment (@PathVariable String id, @RequestParam Instant deleteTime , @RequestParam String deletedBy) {
+    public @ResponseBody String deleteGarment (@PathVariable String id, @RequestParam String deletedBy) {
         Garment garmentId = garmentRepository.findById(id).get();
-        garmentId.setDeleteTime(deleteTime);
+        garmentId.setDeleteTime(Instant.now());
         garmentId.setDeletedBy(deletedBy);
+        garmentRepository.save(garmentId);
         return "Deleted";
     }
 }
