@@ -1,60 +1,60 @@
 package com.springserver.api.controller;
 
-import com.springserver.api.model.*;
+import com.springserver.api.provider.ResourceNotFoundException;
 import com.springserver.api.repository.StyleRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.springserver.api.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.springserver.api.model.Style;
 
-import java.time.Instant;
+import java.util.NoSuchElementException;
 
 @RestController
+@RequestMapping(value = "/style")
 public class StyleController {
     @Autowired
     private StyleRepository styleRepository;
+    @Autowired
+    private StyleService styleService;
 
     //get all styles
-    @GetMapping("/style/all")
+    @GetMapping("/all")
     public @ResponseBody Iterable<Style> getAllStyles() {
-        return styleRepository.findAll();
+        return styleService.getAllStyles();
     }
 
     //get style by id
-    @GetMapping("/style/get/{id}")
+    @GetMapping("/get/{id}")
     public @ResponseBody Style getStyle (@PathVariable String id) {
-        return styleRepository.findById(id).get();
+        try {
+            return styleService.getStyle(id);
+        } catch (NoSuchElementException e) {
+            throw new ResourceNotFoundException("Style", "id", id);
+        }
     }
 
     //create style
-    @PostMapping("/style/create")
-    public @ResponseBody String createStyle (@RequestParam String id, @RequestParam String name, @RequestParam(required=false) String createdBy) {
-        Style createStyle = new Style();
-        createStyle.setId(id);
-        createStyle.setName(name);
-        createStyle.setCreateTime(Instant.now());
-        createStyle.setCreatedBy(createdBy);
-        styleRepository.save(createStyle);
-        return "Style has been created!";
+    @PostMapping("/create")
+    public @ResponseBody Style createStyle (@RequestParam String id, @RequestParam String name, @RequestParam String createdBy) {
+        return styleService.createStyle(id, name, createdBy);
     }
 
     //update style
-    @PostMapping("style/update/{id}")
-    public @ResponseBody String updateStyle (@PathVariable String id, @RequestParam String name, @RequestParam String updatedBy) {
-        Style updatebyid = styleRepository.findById(id).get();
-        updatebyid.setName(name);
-        updatebyid.setUpdateTime(Instant.now());
-        updatebyid.setUpdatedBy(updatedBy);
-        styleRepository.save(updatebyid);
-        return "Style updated!";
+    @PostMapping("/update/{id}")
+    public @ResponseBody Style updateStyle (@PathVariable String id, @RequestParam String name, @RequestParam String updatedBy) {
+        try {
+            return styleService.updateStyle(id, name, updatedBy);
+        } catch (NoSuchElementException e) {
+            throw new ResourceNotFoundException("Style", "id", id);
+        }
     }
     //delete style
-    @PostMapping("style/delete/{id}")
-    public @ResponseBody String deleteStyle (@PathVariable String id, @RequestParam String deletedBy) {
-        Style deletebyid = styleRepository.findById(id).get();
-        deletebyid.setDeleteTime(Instant.now());
-        deletebyid.setDeletedBy(deletedBy);
-        styleRepository.save(deletebyid);
-        return "Style deleted!";
+    @PostMapping("/delete/{id}")
+    public @ResponseBody Style deleteStyle (@PathVariable String id, @RequestParam String deletedBy) {
+        try {
+            return styleService.deleteStyle(id, deletedBy);
+        } catch (NoSuchElementException e) {
+            throw new ResourceNotFoundException("Style", "id", id);
+        }
     }
 }
