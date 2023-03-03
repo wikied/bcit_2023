@@ -1,59 +1,65 @@
 package com.springserver.api.controller;
 
-import com.springserver.api.model.*;
+
+import com.springserver.api.provider.ResourceNotFoundException;
 import com.springserver.api.repository.SizeRepository;
+import com.springserver.api.service.SizeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.springserver.api.model.Size;
+import java.util.*;
 
-import java.time.Instant;
 
 @RestController
+@RequestMapping(value = "/size")
 public class SizeController {
     @Autowired
     private SizeRepository sizeRepository;
 
+    @Autowired
+    private SizeService sizeService;
+
+
+
     //get all sizes
-    @GetMapping("/size/all")
+    @GetMapping("/all")
     public @ResponseBody Iterable<Size> getAllSizes() {
-        return sizeRepository.findAll();
+        return sizeService.getAllSizes();
     }
 
     //get size by id
-    @GetMapping("/size/get/{id}")
+    @GetMapping("/get/{id}")
     public @ResponseBody Size getSize (@PathVariable String id) {
-        return sizeRepository.findById(id).get();
+        try {
+             return sizeService.getSize(id);
+        } catch (NoSuchElementException e) {
+            throw new ResourceNotFoundException("Size", "id", id);
+        }
     }
 
     //create size
-    @PostMapping("/size/create")
-    public @ResponseBody String createSize(@RequestParam String id, @RequestParam String name, @RequestParam String createdBy) {
-        Size createSize = new Size();
-        createSize.setId(id);
-        createSize.setName(name);
-        createSize.setCreateTime(Instant.now());
-        createSize.setCreatedBy(createdBy);
-        sizeRepository.save(createSize);
-        return "Size has been created!";
+    @PostMapping("/create")
+    public @ResponseBody Size createSize(@RequestParam String id, @RequestParam String name, @RequestParam String createdBy) {
+        return sizeService.createSize(id, name, createdBy);
     }
 
     //update size
-    @PostMapping("/size/update/{id}")
-    public @ResponseBody String updateColour (@PathVariable String id, @RequestParam String name, @RequestParam String updatedBy) {
-        Size updatebyid = sizeRepository.findById(id).get();
-        updatebyid.setName(name);
-        updatebyid.setUpdateTime(Instant.now());
-        updatebyid.setUpdatedBy(updatedBy);
-        sizeRepository.save(updatebyid);
-        return "Size updated!";
+    @PostMapping("/update/{id}")
+    public @ResponseBody Size updateSize (@PathVariable String id, @RequestParam String name, @RequestParam String updatedBy) {
+        try {
+            return sizeService.updateSize(id, name, updatedBy);
+        } catch (NoSuchElementException e) {
+            throw new ResourceNotFoundException("Size", "id", id);
+        }
     }
     //delete size
-    @PostMapping("/size/delete/{id}")
-    public @ResponseBody String updateColour (@PathVariable String id, @RequestParam String deletedBy) {
-        Size deletebyid = sizeRepository.findById(id).get();
-        deletebyid.setDeleteTime(Instant.now());
-        deletebyid.setDeletedBy(deletedBy);
-        sizeRepository.save(deletebyid);
-        return "Size deleted!";
+    @PostMapping("/delete/{id}")
+    public @ResponseBody Size updateSize (@PathVariable String id, @RequestParam String deletedBy) {
+        try {
+            return sizeService.deleteSize(id, deletedBy);
+        } catch (NoSuchElementException e) {
+            throw new ResourceNotFoundException("Size", "id", id);
+        }
     }
 }
