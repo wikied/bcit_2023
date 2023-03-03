@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "printing_labels", indexes = {
@@ -46,6 +47,13 @@ public class PrintingLabel {
 
     @Column(name = "deleted_by", length = 50)
     private String deletedBy;
+
+    public PrintingLabel(String s, LocalDate now, String a1, String s1, Garment garment) {
+    }
+
+    public PrintingLabel() {
+
+    }
 
     public String getId() {
         return id;

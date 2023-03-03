@@ -2,6 +2,7 @@ package com.springserver.api.controller;
 import com.springserver.api.model.PrintingLabel;
 import com.springserver.api.repository.PrintingLabelRepository;
 import com.springserver.api.service.PrintingLabelService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,8 @@ import java.util.List;
 public class PrintingLabelController {
 
     private final PrintingLabelRepository printingLabelRepository;
+
+    @Autowired
     private final PrintingLabelService printingLabelService;
 
     public PrintingLabelController(PrintingLabelRepository printingLabelRepository, PrintingLabelService printingLabelService) {
@@ -40,7 +43,8 @@ public class PrintingLabelController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePrintingLabel(@PathVariable String id) {
-        return ResponseEntity.ok().build();
+    public void deletePrintingLabel(@PathVariable String id) {
+
+        printingLabelService.deletePrintingLabel(id);
     }
 }

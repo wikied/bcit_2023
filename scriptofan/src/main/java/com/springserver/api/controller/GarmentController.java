@@ -15,6 +15,8 @@ import java.time.Instant;
 public class GarmentController {
     @Autowired
     private GarmentRepository garmentRepository;
+
+    @Autowired
     private GarmentService garmentService;
 
     //get all garments REST API

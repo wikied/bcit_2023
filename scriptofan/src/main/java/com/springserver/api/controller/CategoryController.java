@@ -11,6 +11,8 @@ public class CategoryController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
     private CategoryService categoryService;
 
     //to create new category

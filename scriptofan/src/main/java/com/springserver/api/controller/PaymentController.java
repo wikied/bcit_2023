@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
     @Autowired
     private PaymentRepository paymentRepository; //to use category repository
+
+    @Autowired
     private PaymentService paymentService;
 
     @GetMapping("/payment/all")
