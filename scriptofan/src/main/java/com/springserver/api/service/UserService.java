@@ -42,7 +42,10 @@ public class UserService {
 
         user.setUserEmail(userRequest.getUserEmail());
         user.setRole(userRequest.getRole());
-        user.setUserPassword(encoder.encode(userRequest.getUserPassword()));
+
+        if (userRequest.getUserPassword() != null) {
+            user.setUserPassword(encoder.encode(userRequest.getUserPassword()));
+        }
         user.setUserPhonenumber(userRequest.getUserPhonenumber());
 
         return userRepository.save(user);
