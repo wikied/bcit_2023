@@ -1,6 +1,7 @@
 package com.springserver.api.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigDecimal;
@@ -28,6 +29,7 @@ public class Seller {
     private User user;
 
     @Column(name = "create_time")
+    @CreationTimestamp
     private Instant createTime;
 
     @Column(name = "update_time")
