@@ -20,12 +20,7 @@ public class TransactionService {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    public Transaction createTransaction(Buyer buyer, Integer priceTotal, Integer quantity, String paymentType, String createdBy) {
-        Payment payment = new Payment();
-        payment.setCreatedBy(createdBy);
-        payment.setPaymentType(paymentType);
-        payment = paymentRepository.save(payment);
-
+    public Transaction createTransaction(Buyer buyer, Payment payment, Integer priceTotal, Integer quantity, String createdBy) {
         final Transaction transaction = new Transaction();
         transaction.setTotal(priceTotal);
         transaction.setCreatedBy(createdBy);

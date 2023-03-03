@@ -1,10 +1,12 @@
 package com.springserver.api.controller;
 
 import com.springserver.api.model.Buyer;
+import com.springserver.api.model.Payment;
 import com.springserver.api.model.PrintingLabel;
 import com.springserver.api.model.Transaction;
 import com.springserver.api.provider.ResourceNotFoundException;
 import com.springserver.api.repository.BuyerRepository;
+import com.springserver.api.repository.PaymentRepository;
 import com.springserver.api.repository.TransactionRepository;
 import com.springserver.api.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,21 @@ public class TransactionController {
     @Autowired
     private BuyerRepository buyerRepository;
 
+    @Autowired
+    private PaymentRepository paymentRepository;
+
     @PostMapping
-    public @ResponseBody Transaction createTransaction(Authentication authentication, @RequestParam String buyerId,
+    public @ResponseBody Transaction createTransaction(Authentication authentication, @RequestParam String paymentId, @RequestParam String buyerId,
                                                   @RequestParam Integer priceTotal,
-                                                  @RequestParam Integer quantity,
-                                                  @RequestParam String paymentType) {
+                                                  @RequestParam Integer quantity) {
+        Optional<Payment> paymentQuery = paymentRepository.findById(paymentId);
+        if (paymentQuery.isEmpty()) {
+            throw new ResourceNotFoundException("Payment", "id", paymentId);
+        }
+
         Optional<Buyer> buyerQuery = buyerRepository.findById(buyerId);
         if (buyerQuery.isPresent()) {
-            return transactionService.createTransaction(buyerQuery.get(), priceTotal, quantity, paymentType, authentication.getName());
+            return transactionService.createTransaction(buyerQuery.get(), paymentQuery.get(), priceTotal, quantity, authentication.getName());
         }
 
         throw new ResourceNotFoundException("Buyer", "id", buyerId);
