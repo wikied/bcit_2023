@@ -2,6 +2,7 @@ package com.springserver.api.controller;
 
 import com.springserver.api.model.*;
 import com.springserver.api.repository.GarmentRepository;
+import com.springserver.api.service.CategoryService;
 import com.springserver.api.service.GarmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,9 @@ public class GarmentController {
     @Autowired
     private GarmentService garmentService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     //get all garments REST API
     @GetMapping("/garment/all")
     public @ResponseBody Iterable<Garment> getAllGarments() {
@@ -33,11 +37,12 @@ public class GarmentController {
 
     //build create garment REST API
     @PostMapping("/garment/create")
-    public @ResponseBody Garment createGarment(@RequestParam Category category, @RequestParam Seller seller, @RequestParam GarmentImage garmentImage, @RequestParam GarmentStatus garmentStatus,
+    public @ResponseBody Garment createGarment(@RequestParam String category, @RequestParam(required = false) Seller seller, @RequestParam(required = false) GarmentImage garmentImage, @RequestParam(required = false) GarmentStatus garmentStatus,
                                               @RequestParam(required=false) String description, @RequestParam(required = false) String material, @RequestParam(required = false) String defects, @RequestParam(required = false) Integer price,
                                               @RequestParam(required=false) BigDecimal co2Saved, @RequestParam(required=false) Integer garmentRating, @RequestParam(required = false) String details, @RequestParam(required=false) String createdBy) {
 
-        return garmentService.createGarment(category, seller, garmentImage, garmentStatus, description, material, defects, price, co2Saved, garmentRating, details, createdBy);
+        Category categoryId = categoryService.findCategoryById(category);
+        return garmentService.createGarment(categoryId, seller, garmentImage, garmentStatus, description, material, defects, price, co2Saved, garmentRating, details, createdBy);
     }
 
 
