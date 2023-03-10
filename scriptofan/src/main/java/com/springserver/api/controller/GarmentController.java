@@ -33,11 +33,11 @@ public class GarmentController {
 
     //build create garment REST API
     @PostMapping("/garment/create")
-    public @ResponseBody String createGarment(@RequestParam String id, @RequestParam Category category, @RequestParam Seller seller, @RequestParam GarmentImage garmentImage, @RequestParam GarmentStatus garmentStatus,
+    public @ResponseBody Garment createGarment(@RequestParam Category category, @RequestParam Seller seller, @RequestParam GarmentImage garmentImage, @RequestParam GarmentStatus garmentStatus,
                                               @RequestParam(required=false) String description, @RequestParam(required = false) String material, @RequestParam(required = false) String defects, @RequestParam(required = false) Integer price,
                                               @RequestParam(required=false) BigDecimal co2Saved, @RequestParam(required=false) Integer garmentRating, @RequestParam(required = false) String details, @RequestParam(required=false) String createdBy) {
 
-        return garmentService.createGarment(id, category, seller, garmentImage, garmentStatus, description, material, defects, price, co2Saved, garmentRating, details, createdBy);
+        return garmentService.createGarment(category, seller, garmentImage, garmentStatus, description, material, defects, price, co2Saved, garmentRating, details, createdBy);
     }
 
 

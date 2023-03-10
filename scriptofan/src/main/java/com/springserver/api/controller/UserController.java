@@ -1,13 +1,12 @@
 package com.springserver.api.controller;
 
-import com.springserver.api.model.Buyer;
 import com.springserver.api.model.User;
-import com.springserver.api.repository.BuyerRepository;
 import com.springserver.api.provider.ResourceNotFoundException;
 import com.springserver.api.repository.UserRepository;
 import com.springserver.api.service.UserService;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
