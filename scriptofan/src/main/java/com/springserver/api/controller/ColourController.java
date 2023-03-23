@@ -5,6 +5,7 @@ import com.springserver.api.repository.ColourRepository;
 import com.springserver.api.service.ColourService;
 import com.springserver.api.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.springserver.api.model.Colour;
 
@@ -20,13 +21,13 @@ public class ColourController {
     private ColourService colourService;
 
     //get all colours
-    @GetMapping("/all")
+    @GetMapping
     public @ResponseBody Iterable<Colour> getAllColours() {
         return colourService.getAllColours();
     }
 
     //get colour by id
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public @ResponseBody Colour getColour (@PathVariable String id) {
         try {
             return colourService.getColour(id);
@@ -36,25 +37,25 @@ public class ColourController {
     }
 
     //create colour
-    @PostMapping("/create")
-    public @ResponseBody Colour createColour(@RequestParam String id, @RequestParam String name, @RequestParam String createdBy) {
-        return colourService.createColour(id, name, createdBy);
+    @PostMapping
+    public @ResponseBody Colour createColour(Authentication authentication, @RequestParam String id, @RequestParam String name) {
+        return colourService.createColour(id, name, authentication.getName());
     }
 
     //update colour
-    @PostMapping("/update/{id}")
-    public @ResponseBody Colour updateColour (@PathVariable String id, @RequestParam String name, @RequestParam String updatedBy) {
+    @PutMapping("/{id}")
+    public @ResponseBody Colour updateColour (Authentication authentication, @PathVariable String id, @RequestParam String name) {
         try {
-            return colourService.updateColour(id, name, updatedBy);
+            return colourService.updateColour(id, name, authentication.getName());
         } catch (NoSuchElementException e) {
             throw new ResourceNotFoundException("Colour", "id", id);
         }
     }
     //delete colour
-    @PostMapping("/delete/{id}")
-    public @ResponseBody Colour deleteColour (@PathVariable String id, @RequestParam String deletedBy) {
+    @DeleteMapping("/{id}")
+    public @ResponseBody Colour deleteColour (Authentication authentication, @PathVariable String id, @RequestParam String deletedBy) {
         try {
-            return colourService.deleteColour(id, deletedBy);
+            return colourService.deleteColour(id, authentication.getName());
         } catch (NoSuchElementException e) {
             throw new ResourceNotFoundException("Colour", "id", id);
         }

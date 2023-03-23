@@ -6,6 +6,7 @@ import com.springserver.api.repository.SizeRepository;
 import com.springserver.api.service.SizeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.springserver.api.model.Size;
 import java.util.*;
@@ -23,13 +24,13 @@ public class SizeController {
 
 
     //get all sizes
-    @GetMapping("/all")
+    @GetMapping
     public @ResponseBody Iterable<Size> getAllSizes() {
         return sizeService.getAllSizes();
     }
 
     //get size by id
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public @ResponseBody Size getSize (@PathVariable String id) {
         try {
              return sizeService.getSize(id);
@@ -39,25 +40,25 @@ public class SizeController {
     }
 
     //create size
-    @PostMapping("/create")
-    public @ResponseBody Size createSize(@RequestParam String id, @RequestParam String name, @RequestParam String createdBy) {
-        return sizeService.createSize(id, name, createdBy);
+    @PostMapping
+    public @ResponseBody Size createSize(Authentication authentication, @RequestParam String id, @RequestParam String name) {
+        return sizeService.createSize(id, name, authentication.getName());
     }
 
     //update size
-    @PostMapping("/update/{id}")
-    public @ResponseBody Size updateSize (@PathVariable String id, @RequestParam String name, @RequestParam String updatedBy) {
+    @PutMapping("/{id}")
+    public @ResponseBody Size updateSize (Authentication authentication, @PathVariable String id, @RequestParam String name) {
         try {
-            return sizeService.updateSize(id, name, updatedBy);
+            return sizeService.updateSize(id, name, authentication.getName());
         } catch (NoSuchElementException e) {
             throw new ResourceNotFoundException("Size", "id", id);
         }
     }
     //delete size
-    @PostMapping("/delete/{id}")
-    public @ResponseBody Size updateSize (@PathVariable String id, @RequestParam String deletedBy) {
+    @DeleteMapping("/{id}")
+    public @ResponseBody Size updateSize (Authentication authentication, @PathVariable String id) {
         try {
-            return sizeService.deleteSize(id, deletedBy);
+            return sizeService.deleteSize(id, authentication.getName());
         } catch (NoSuchElementException e) {
             throw new ResourceNotFoundException("Size", "id", id);
         }
