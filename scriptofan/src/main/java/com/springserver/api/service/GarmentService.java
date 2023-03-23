@@ -30,31 +30,28 @@ public class GarmentService {
         }
     }
 
-    public String createGarment(String id, Category category, Seller seller, GarmentImage garmentImage, GarmentStatus garmentStatus,
+    public Garment createGarment(Category category, Seller seller, GarmentImage garmentImage, GarmentStatus garmentStatus,
                                 String description, String material, String defects, Integer price,
                                 BigDecimal co2Saved, Integer garmentRating, String details, String createdBy) throws ResourceNotFoundException {
-        if (garmentRepository.findById(id).isPresent()) {
-            throw new ResourceNotFoundException("Garment", "Garment id Already Exists", id);
-        } else {
-            Garment createGarment = new Garment();
-            createGarment.setId(id);
-            createGarment.setCategory(category);
-            createGarment.setDescription(description);
-            createGarment.setSeller(seller);
-            createGarment.setGarmentImage(garmentImage);
-            createGarment.setGarmentStatus(garmentStatus);
-            createGarment.setMaterial(material);
-            createGarment.setDefects(defects);
-            createGarment.setPrice(price);
-            createGarment.setCo2Saved(co2Saved);
-            createGarment.setGarmentRating(garmentRating);
-            createGarment.setDetails(details);
-            createGarment.setCreateTime(Instant.now());
-            createGarment.setCreatedBy(createdBy);
-            garmentRepository.save(createGarment);
 
-            return "Garment has been successfully created!";
-        }
+        Garment createGarment = new Garment();
+        createGarment.setCategory(category);
+        createGarment.setDescription(description);
+        createGarment.setSeller(seller);
+        createGarment.setGarmentImage(garmentImage);
+        createGarment.setGarmentStatus(garmentStatus);
+        createGarment.setMaterial(material);
+        createGarment.setDefects(defects);
+        createGarment.setPrice(price);
+        createGarment.setCo2Saved(co2Saved);
+        createGarment.setGarmentRating(garmentRating);
+        createGarment.setDetails(details);
+        createGarment.setCreateTime(Instant.now());
+        createGarment.setCreatedBy(createdBy);
+
+        return garmentRepository.save(createGarment);
+
+
     }
 
     public String editGarment(String id, String description, String material, String defects, Integer price, BigDecimal co2Saved, Integer garmentRating, String details, String updatedBy) throws ResourceNotFoundException {
