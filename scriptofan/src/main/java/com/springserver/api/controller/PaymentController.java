@@ -4,9 +4,11 @@ import com.springserver.api.model.Payment;
 import com.springserver.api.repository.PaymentRepository;
 import com.springserver.api.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/payment")
 public class PaymentController {
     @Autowired
     private PaymentRepository paymentRepository; //to use category repository
@@ -14,17 +16,17 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @GetMapping("/payment/all")
+    @GetMapping
     public @ResponseBody Iterable<Payment> createNewPayments(){
         return paymentService.findAllPayments();
     }
-    @PostMapping("/payment/add")
-    public @ResponseBody String addNewCategory (@RequestParam String paymentType, @RequestParam String createBy) {
-        return paymentService.addNewPayment(paymentType, createBy);
+    @PostMapping
+    public @ResponseBody String addNewCategory (Authentication authentication, @RequestParam String paymentType) {
+        return paymentService.addNewPayment(paymentType, authentication.getName());
     }
 
-    @PostMapping ("payment/find/{id}/remove")
-    public @ResponseBody String removePayment(@PathVariable String id, @RequestParam String deletedBy) {
-        return paymentService.removePayment(id, deletedBy);
+    @DeleteMapping ("/{id}")
+    public @ResponseBody String removePayment(Authentication authentication, @PathVariable String id) {
+        return paymentService.removePayment(id, authentication.getName());
     }
 }
