@@ -1,23 +1,18 @@
 package com.springserver.api.controller;
 
 import com.springserver.api.model.*;
-import com.springserver.api.repository.GarmentRepository;
 import com.springserver.api.service.CategoryService;
 import com.springserver.api.service.GarmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.springserver.api.model.Garment;
-import com.springserver.api.repository.GarmentRepository;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
 @RestController
 @RequestMapping("/garment")
 public class GarmentController {
-    @Autowired
-    private GarmentRepository garmentRepository;
 
     @Autowired
     private GarmentService garmentService;

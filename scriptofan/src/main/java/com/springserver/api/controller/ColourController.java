@@ -1,9 +1,7 @@
 package com.springserver.api.controller;
 
 import com.springserver.api.provider.ResourceNotFoundException;
-import com.springserver.api.repository.ColourRepository;
 import com.springserver.api.service.ColourService;
-import com.springserver.api.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +13,7 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping(value = "/colour")
 public class ColourController {
-    @Autowired
-    private ColourRepository colourRepository;
+
     @Autowired
     private ColourService colourService;
 
@@ -53,7 +50,7 @@ public class ColourController {
     }
     //delete colour
     @DeleteMapping("/{id}")
-    public @ResponseBody Colour deleteColour (Authentication authentication, @PathVariable String id, @RequestParam String deletedBy) {
+    public @ResponseBody Colour deleteColour (Authentication authentication, @PathVariable String id) {
         try {
             return colourService.deleteColour(id, authentication.getName());
         } catch (NoSuchElementException e) {

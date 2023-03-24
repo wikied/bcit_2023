@@ -1,7 +1,6 @@
 package com.springserver.api.controller;
 
 import com.springserver.api.model.Payment;
-import com.springserver.api.repository.PaymentRepository;
 import com.springserver.api.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
-    @Autowired
-    private PaymentRepository paymentRepository; //to use category repository
 
     @Autowired
     private PaymentService paymentService;
