@@ -19,13 +19,13 @@ public class ColourController {
     private ColourService colourService;
 
     //get all colours
-    @GetMapping("/all")
+    @GetMapping
     public @ResponseBody Iterable<Colour> getAllColours() {
         return colourService.getAllColours();
     }
 
     //get colour by id
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Colour> getColour (@PathVariable String id) {
         Optional<Colour> getColour = colourRepository.findById(id);
         if (getColour.isPresent()) {
@@ -36,7 +36,7 @@ public class ColourController {
     }
 
     //create colour
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Colour> createColour(Authentication authentication, @RequestBody Colour colour) {
         String createdBy = authentication.getName();
         Colour newColour = colourService.createColour(colour, createdBy);
@@ -47,7 +47,7 @@ public class ColourController {
     }
 
     //update colour
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Colour> updateColour (Authentication authentication, @RequestBody Colour colour, @PathVariable String id) {
         String updatedBy = authentication.getName();
         Colour updateColour = colourService.updateColour(id, colour, updatedBy);
@@ -57,7 +57,7 @@ public class ColourController {
         return ResponseEntity.ok(updateColour);
     }
     //delete colour
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Colour> deleteColour (Authentication authentication, @PathVariable String id) {
         String deletedBy = authentication.getName();
         Colour deleteColour = colourService.deleteColour(id, deletedBy);

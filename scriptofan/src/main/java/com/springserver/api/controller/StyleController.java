@@ -20,13 +20,13 @@ public class StyleController {
     private StyleService styleService;
 
     //get all styles
-    @GetMapping("/all")
+    @GetMapping
     public @ResponseBody Iterable<Style> getAllStyles() {
         return styleService.getAllStyles();
     }
 
     //get style by id
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Style> getStyle (@PathVariable String id) {
         Optional<Style> getStyle = styleRepository.findById(id);
         if (getStyle.isPresent()) {
@@ -37,7 +37,7 @@ public class StyleController {
     }
 
     //create style
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Style> createStyle(Authentication authentication, @RequestBody Style style) {
         String createdBy = authentication.getName();
         Style newstyle = styleService.createStyle(style, createdBy);
@@ -48,7 +48,7 @@ public class StyleController {
     }
 
     //update style
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Style> updateStyle (Authentication authentication, @RequestBody Style style, @PathVariable String id) {
         String updatedBy = authentication.getName();
         Style updateStyle = styleService.updateStyle(id, style, updatedBy);
@@ -58,7 +58,7 @@ public class StyleController {
         return ResponseEntity.ok(updateStyle);
     }
     //delete style
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Style> deleteStyle (Authentication authentication, @PathVariable String id) {
         String deletedBy = authentication.getName();
         Style deleteStyle = styleService.deleteStyle(id, deletedBy);

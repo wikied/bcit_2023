@@ -24,13 +24,13 @@ public class SizeController {
 
 
     //get all sizes
-    @GetMapping("/all")
+    @GetMapping
     public @ResponseBody Iterable<Size> getAllSizes() {
         return sizeService.getAllSizes();
     }
 
     //get size by id
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Size> getSize (@PathVariable String id) {
         Optional<Size> getSize = sizeRepository.findById(id);
         if (getSize.isPresent()) {
@@ -42,7 +42,7 @@ public class SizeController {
 
 
     //create size
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Size> createSize(Authentication authentication, @RequestBody Size size) {
         String createdBy = authentication.getName();
         Size newsize = sizeService.createSize(size, createdBy);
@@ -53,7 +53,7 @@ public class SizeController {
     }
 
     //update size
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Size> updateSize (Authentication authentication, @RequestBody Size size, @PathVariable String id) {
         String updatedBy = authentication.getName();
         Size updateSize = sizeService.updateSize(id, size, updatedBy);
@@ -63,7 +63,7 @@ public class SizeController {
         return ResponseEntity.ok(updateSize);
     }
     //delete size
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Size> deleteSize (Authentication authentication, @PathVariable String id) {
         String deletedBy = authentication.getName();
         Size deleteSize = sizeService.deleteSize(id, deletedBy);
