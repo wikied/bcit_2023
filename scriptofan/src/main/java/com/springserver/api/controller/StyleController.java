@@ -4,11 +4,13 @@ import com.springserver.api.provider.ResourceNotFoundException;
 import com.springserver.api.repository.StyleRepository;
 import com.springserver.api.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.springserver.api.model.Style;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/style")
@@ -26,36 +28,44 @@ public class StyleController {
 
     //get style by id
     @GetMapping("/{id}")
-    public @ResponseBody Style getStyle (@PathVariable String id) {
-        try {
-            return styleService.getStyle(id);
-        } catch (NoSuchElementException e) {
-            throw new ResourceNotFoundException("Style", "id", id);
+    public ResponseEntity<Style> getStyle (@PathVariable String id) {
+        Optional<Style> getStyle = styleRepository.findById(id);
+        if (getStyle.isPresent()) {
+            Style style = getStyle.get();
+            return ResponseEntity.ok(style);
         }
+        throw new ResourceNotFoundException("Style", "id", id);
     }
 
     //create style
     @PostMapping
-    public @ResponseBody Style createStyle (Authentication authentication, @RequestParam String id, @RequestParam String name) {
-        return styleService.createStyle(id, name, authentication.getName());
+    public ResponseEntity<Style> createStyle(Authentication authentication, @RequestBody Style style) {
+        String createdBy = authentication.getName();
+        Style newstyle = styleService.createStyle(style, createdBy);
+        if (newstyle == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(newstyle);
     }
 
     //update style
     @PutMapping("/{id}")
-    public @ResponseBody Style updateStyle (Authentication authentication, @PathVariable String id, @RequestParam String name) {
-        try {
-            return styleService.updateStyle(id, name, authentication.getName());
-        } catch (NoSuchElementException e) {
+    public ResponseEntity<Style> updateStyle (Authentication authentication, @RequestBody Style style, @PathVariable String id) {
+        String updatedBy = authentication.getName();
+        Style updateStyle = styleService.updateStyle(id, style, updatedBy);
+        if (updateStyle == null) {
             throw new ResourceNotFoundException("Style", "id", id);
         }
+        return ResponseEntity.ok(updateStyle);
     }
     //delete style
     @DeleteMapping("/{id}")
-    public @ResponseBody Style deleteStyle (Authentication authentication, @PathVariable String id) {
-        try {
-            return styleService.deleteStyle(id, authentication.getName());
-        } catch (NoSuchElementException e) {
+    public ResponseEntity<Style> deleteStyle (Authentication authentication, @PathVariable String id) {
+        String deletedBy = authentication.getName();
+        Style deleteStyle = styleService.deleteStyle(id, deletedBy);
+        if (deleteStyle == null) {
             throw new ResourceNotFoundException("Style", "id", id);
         }
+        return ResponseEntity.ok(deleteStyle);
     }
 }
