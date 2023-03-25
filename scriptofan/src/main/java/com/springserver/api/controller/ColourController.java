@@ -1,21 +1,21 @@
 package com.springserver.api.controller;
 
 import com.springserver.api.provider.ResourceNotFoundException;
+import com.springserver.api.repository.ColourRepository;
 import com.springserver.api.service.ColourService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.springserver.api.model.Colour;
-
-import java.time.Instant;
-import java.util.NoSuchElementException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping(value = "/colour")
 public class ColourController {
-
+    @Autowired
+    private ColourRepository colourRepository;
     @Autowired
     private ColourService colourService;
 
