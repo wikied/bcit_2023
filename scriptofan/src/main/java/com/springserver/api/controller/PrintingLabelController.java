@@ -3,7 +3,6 @@ import com.springserver.api.model.PrintingLabel;
 import com.springserver.api.repository.PrintingLabelRepository;
 import com.springserver.api.service.PrintingLabelService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
