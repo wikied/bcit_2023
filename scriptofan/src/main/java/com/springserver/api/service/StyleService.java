@@ -21,29 +21,48 @@ public class StyleService {
     }
 
     //create style
-    public Style createStyle(String id, String name, String createdBy) {
-        Style createStyle = new Style();
-        createStyle.setId(id);
-        createStyle.setName(name);
-        createStyle.setCreateTime(Instant.now());
-        createStyle.setCreatedBy(createdBy);
-        return styleRepository.save(createStyle);
+    public Style createStyle(Style style, String createdBy) {
+        if (style == null || style.getName() == null || style.getName().trim().isEmpty()) {
+            return null;
+        }
+        style.setCreatedBy(createdBy);
+        style.setCreateTime(Instant.now());
+        Style createStyle = styleRepository.save(style);
+        return createStyle;
     }
 
     //update style
-    public Style updateStyle(String id, String name, String updatedBy) {
-        Style updatebyid = styleRepository.findById(id).get();
-        updatebyid.setName(name);
-        updatebyid.setUpdateTime(Instant.now());
-        updatebyid.setUpdatedBy(updatedBy);
-        return styleRepository.save(updatebyid);
+    public Style updateStyle(String id, Style updatedStyle, String updatedBy) {
+        Style existingStyle = styleRepository.findById(id).orElse(null);
+
+        if (existingStyle == null) {
+            return null;
+        }
+        if (updatedStyle == null || updatedStyle.getName() == null || updatedStyle.getName().trim().isEmpty()) {
+            return null;
+        }
+        existingStyle.setName(updatedStyle.getName());
+        existingStyle.setUpdateTime(Instant.now());
+        existingStyle.setUpdatedBy(updatedBy);
+
+        Style updatedStyleSave = styleRepository.save(existingStyle);
+
+        return updatedStyleSave;
     }
 
     //delete style
     public Style deleteStyle(String id, String deletedBy) {
-        Style deletebyid = styleRepository.findById(id).get();
-        deletebyid.setDeleteTime(Instant.now());
-        deletebyid.setDeletedBy(deletedBy);
-        return styleRepository.save(deletebyid);
+
+        Style styleToDelete = styleRepository.findById(id).orElse(null);
+
+        if (styleToDelete == null) {
+            return null;
+        }
+        styleToDelete.setDeleteTime(Instant.now());
+        styleToDelete.setDeletedBy(deletedBy);
+
+        Style deleteStyleSave = styleRepository.save(styleToDelete);
+
+        return deleteStyleSave;
     }
 }

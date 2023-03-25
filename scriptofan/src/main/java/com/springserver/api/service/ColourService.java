@@ -21,29 +21,47 @@ public class ColourService {
     }
 
     //create colour
-    public Colour createColour(String id, String name, String createdBy) {
-        Colour createColour = new Colour();
-        createColour.setId(id);
-        createColour.setName(name);
-        createColour.setCreateTime(Instant.now());
-        createColour.setCreatedBy(createdBy);
-        return colourRepository.save(createColour);
+    public Colour createColour(Colour colour, String createdBy) {
+        if (colour == null || colour.getName() == null || colour.getName().trim().isEmpty()) {
+            return null;
+        }
+        colour.setCreatedBy(createdBy);
+        colour.setCreateTime(Instant.now());
+        Colour createcolour = colourRepository.save(colour);
+        return createcolour;
     }
-
     //update colour
-    public Colour updateColour(String id, String name, String updatedBy) {
-        Colour updatebyid = colourRepository.findById(id).get();
-        updatebyid.setName(name);
-        updatebyid.setUpdateTime(Instant.now());
-        updatebyid.setUpdatedBy(updatedBy);
-        return colourRepository.save(updatebyid);
+    public Colour updateColour(String id, Colour updatedColour, String updatedBy) {
+        Colour existingColour = colourRepository.findById(id).orElse(null);
+
+        if (existingColour == null) {
+            return null;
+        }
+        if (updatedColour == null || updatedColour.getName() == null || updatedColour.getName().trim().isEmpty()) {
+            return null;
+        }
+        existingColour.setName(updatedColour.getName());
+        existingColour.setUpdateTime(Instant.now());
+        existingColour.setUpdatedBy(updatedBy);
+
+        Colour updatedColourSave = colourRepository.save(existingColour);
+
+        return updatedColourSave;
     }
 
     //delete colour
     public Colour deleteColour(String id, String deletedBy) {
-        Colour deletebyid = colourRepository.findById(id).get();
-        deletebyid.setDeleteTime(Instant.now());
-        deletebyid.setDeletedBy(deletedBy);
-        return colourRepository.save(deletebyid);
+
+        Colour colourToDelete = colourRepository.findById(id).orElse(null);
+
+        if (colourToDelete == null) {
+            return null;
+        }
+        colourToDelete.setDeleteTime(Instant.now());
+        colourToDelete.setDeletedBy(deletedBy);
+
+        Colour deletecolourSave = colourRepository.save(colourToDelete);
+
+        return deletecolourSave;
     }
 }

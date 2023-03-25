@@ -23,7 +23,6 @@ public class SizeController {
     private SizeService sizeService;
 
 
-
     //get all sizes
     @GetMapping
     public @ResponseBody Iterable<Size> getAllSizes() {
@@ -40,6 +39,7 @@ public class SizeController {
         }
         throw new ResourceNotFoundException("Size", "id", id);
     }
+
 
     //create size
     @PostMapping
