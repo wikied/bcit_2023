@@ -9,14 +9,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.springserver.api.model.Style;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping(value = "/style")
 public class StyleController {
     @Autowired
     private StyleRepository styleRepository;
+
     @Autowired
     private StyleService styleService;
 
