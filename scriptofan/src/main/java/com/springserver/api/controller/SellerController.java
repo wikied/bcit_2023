@@ -28,7 +28,7 @@ public class SellerController {
 
     @PostMapping
     @PermitAll
-    public @ResponseBody Seller addNewSeller(@RequestParam BigDecimal revenue, @RequestParam int sellerRating, @RequestParam String username, @RequestParam String createdBy){
+    public @ResponseBody Seller addNewSeller(@RequestParam BigDecimal revenue, @RequestBody int sellerRating, @RequestBody String username, @RequestBody String createdBy){
 
         Optional<User> user = userRepository.findByUserName(username);
         if (user.isEmpty()) {

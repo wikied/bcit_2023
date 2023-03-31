@@ -32,7 +32,7 @@ public class GarmentImageController {
 
     @PostMapping
     @PermitAll
-    public @ResponseBody GarmentImage addNewImage(Authentication authentication, @RequestParam String imageUrl){
+    public @ResponseBody GarmentImage addNewImage(Authentication authentication, @RequestBody String imageUrl){
         return garmentImageService.createGarmentImage(imageUrl, authentication.getName());
     }
 
