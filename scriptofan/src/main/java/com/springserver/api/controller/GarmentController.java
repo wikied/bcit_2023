@@ -1,14 +1,18 @@
 package com.springserver.api.controller;
 
 import com.springserver.api.model.*;
+import com.springserver.api.provider.ResourceNotFoundException;
+import com.springserver.api.repository.GarmentRepository;
 import com.springserver.api.service.CategoryService;
 import com.springserver.api.service.GarmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.springserver.api.model.Garment;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/garment")
@@ -16,6 +20,8 @@ public class GarmentController {
 
     @Autowired
     private GarmentService garmentService;
+    @Autowired
+    private GarmentRepository garmentRepository;
 
     @Autowired
     private CategoryService categoryService;
@@ -28,27 +34,43 @@ public class GarmentController {
 
     //get garment by id REST API
     @GetMapping("/{id}")
-    public @ResponseBody Garment getGarment (@PathVariable String id) {
-        return garmentService.getGarment(id);
+    public ResponseEntity<Garment>  getGarment (@PathVariable String id) {
+        Optional<Garment> getGarment = garmentRepository.findById(id);
+        if (getGarment.isPresent()) {
+            Garment garment = getGarment.get();
+            return ResponseEntity.ok(garment);
+        }
+        throw new ResourceNotFoundException("garment", "id", id);
     }
 
     //build create garment REST API
-    @PostMapping("/garment/create")
-    public @ResponseBody Garment createGarment(Authentication authentication, @RequestParam String category, @RequestParam(required = false) Seller seller, @RequestParam(required = false) GarmentImage garmentImage, @RequestParam(required = false) GarmentStatus garmentStatus,
-                                              @RequestParam(required=false) String description, @RequestParam(required = false) String material, @RequestParam(required = false) String defects, @RequestParam(required = false) Integer price,
-                                              @RequestParam(required=false) BigDecimal co2Saved, @RequestParam(required=false) Integer garmentRating, @RequestParam(required = false) String details) {
-        Category categoryId = categoryService.findCategoryById(category);
-        return garmentService.createGarment(categoryId, seller, garmentImage, garmentStatus, description, material, defects, price, co2Saved, garmentRating, details, authentication.getName());
+    @PostMapping
+    public ResponseEntity<Garment> createGarment(Authentication authentication, @RequestBody Garment garment) {
+        Garment newGarment = garmentService.createGarment(garment, authentication.getName());
+        if (newGarment == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(newGarment);
     }
 
 
     @PutMapping("/{id}")
-    public @ResponseBody String editGarment (Authentication authentication, @PathVariable String id, @RequestParam  String description, @RequestParam String material, @RequestParam String defects, @RequestParam Integer price, @RequestParam BigDecimal co2Saved, @RequestParam Integer garmentRating, @RequestParam String details) {
-        return garmentService.editGarment(id, description, material, defects, price, co2Saved, garmentRating, details, authentication.getName());
+    public ResponseEntity<Garment> editGarment (Authentication authentication, @RequestBody Garment garment, @PathVariable String id) {
+        String updatedBy = authentication.getName();
+        Garment updategarment = garmentService.editGarment(id, garment, updatedBy);
+        if (updategarment == null) {
+            throw new ResourceNotFoundException("garment", "id", id);
+        }
+        return ResponseEntity.ok(updategarment);
     }
 
     @DeleteMapping("/{id}")
-    public @ResponseBody String deleteGarment (Authentication authentication, @PathVariable String id) {
-        return garmentService.deleteGarment(id, authentication.getName());
+    public ResponseEntity<Garment> deleteGarment (Authentication authentication, @PathVariable String id) {
+        String deletedBy = authentication.getName();
+        Garment deleteGarment = garmentService.deleteGarment(id, deletedBy);
+        if (deleteGarment == null) {
+            throw new ResourceNotFoundException("garment", "id", id);
+        }
+        return ResponseEntity.ok(deleteGarment);
     }
 }
